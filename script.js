@@ -133,7 +133,38 @@ addToCartButtons.forEach((button) => {
 
         orderButton.addEventListener("click", () => {
             const validatedOrder = document.querySelector(".validatedOrder")
-            validatedOrder.innerHTML = `
+            const cartItems =ulCart.querySelectorAll(".cartItem");
+            let orderProducts = "";
+
+            cartItems.forEach((cartItem) => {
+                const productName = cartItem.querySelector("p").textContent.trim();
+                const productQuantity = cartItem.querySelector(".cartQuantity").textContent.trim();
+                const productUnitPrice = cartItem.querySelector(".unitPrice").textContent.trim();
+                const productTotalPrice = cartItem.querySelector(".totalPrice").textContent.trim();
+                const productImgSrc = cartItem.querySelector("img");
+
+                orderProducts += `<div class="orderProduct">
+                            <div>
+                                <img src="${productImgSrc}" alt="">
+                            </div>
+                            <div class="infoOrderProduct">
+                                <div>
+                                    <p>${productName}</p>
+                                </div>
+                                <div class="quantityPrice">
+                                    <div class="cartPrice">
+                                        <p class="cartQuantity">${productQuantity}</p>
+                                        <p class="unitPrice">${productUnitPrice}</p>
+                                    </div>
+                                    <div>
+                                        <h3>${productTotalPrice}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+            })
+                validatedOrder.innerHTML = `
                 <div class="orderRecap">
                     <div class="orderElement">
                         <div class="enteteRecap">
@@ -146,26 +177,9 @@ addToCartButtons.forEach((button) => {
                             <h2>Order Confirmed</h2>
                             <p>We hope you enjoy your food!</p>
                         </div>
-                        <div class="orderProduct">
-                            <div>
-                                <img src="${productImgSrc}" alt="">
-                            </div>
-                            <div class="infoOrderProduct">
-                                <div>
-                                    <p>${productName}</p>
-                                </div>
-                                <div class="quantityPrice">
-                                    <div class="cartPrice">
-                                        <p class="cartQuantity">${quantity}x</p>
-                                        <p class="unitPrice">$${productPrice}</p>
-                                    </div>
-                                    <div>
-                                        <h3>$${quantity * productPrice}</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                    ${orderProducts}
+                    <p>$${totalAmount.toFixed(2)}</p>
                     <button class="newOrder">Start New Order</button>
                 </div>
             `;
@@ -173,6 +187,7 @@ addToCartButtons.forEach((button) => {
             validatedOrder.style.width = "100%";
             validatedOrder.style.height = "100%";
             validatedOrder.style.padding = "50px";
+            validatedOrder.style.position = "fixed";
 
             const newOrder = document.querySelector(".newOrder");
             newOrder.addEventListener("click", () => {

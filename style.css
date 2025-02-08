@@ -315,3 +315,51 @@
     justify-content: space-between;
     gap: 20px;
 }
+
+@media only screen and (max-width: 480px) {
+
+    .productsRecap {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .products {
+        margin: 0;
+        width: 100%;
+    }
+
+    .cartContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .element {
+        width: 90%;
+    }
+
+    .recap {
+        width: 90%;
+        height: auto;
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    #ulCart {
+        padding: 5px;
+    }
+
+    .titleHome {
+        margin: 10px 20px;
+        font-weight: 900;
+        font-size: 3rem;
+    }
+
+    .validatedOrder {
+        height: 100%;
+    }
+
+    .orderRecap {
+        width: 80%;
+        overflow: auto;
+    }
+}
