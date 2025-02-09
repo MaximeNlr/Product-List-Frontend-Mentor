@@ -71,13 +71,16 @@ addToCartButtons.forEach((button) => {
         const productName = productElement.querySelector(".infoProduct h3").textContent.trim();
         const productPrice = parseFloat(productElement.querySelector(".price").textContent.trim());
         const productImg = productElement.querySelector(".elementImgContainer img");
+        const borderImg = productElement.querySelector(".elementImgContainer");
         const productImgSrc = productImg.src;
+        
         const addImgBtn = productElement.querySelector(".addImgBtn");
 
         const quantityContainer = createQuantityContainer();
         const infDelivery = InfoDeliveryContainer();
         const orderButton = confirmOrderContainer();
         const cartItem = createCartItem(productName, productPrice);
+        cartItem.setAttribute("data-img", productImgSrc);
 
         const incrButton = quantityContainer.querySelector(".incrButton");
         const decrButton = quantityContainer.querySelector(".decrButton");
@@ -85,6 +88,11 @@ addToCartButtons.forEach((button) => {
         const quantityDisplay = quantityContainer.querySelector(".quantity");
         const cartQuantityDisplay = cartItem.querySelector(".cartQuantity");
         const totalPriceDisplay = cartItem.querySelector(".totalPrice");
+        borderImg.style.border = "3px solid #C73C0D";
+        borderImg.style.borderRadius = "15px"
+        borderImg.style.background = "#C73C0D";
+
+
 
         let quantity = 1;
 
@@ -127,13 +135,16 @@ addToCartButtons.forEach((button) => {
             infDelivery.style.display = "none";
             button.style.display = "block";
             addImgBtn.style.display = "flex";
-            recapEmpty.style.display = "flex";
+            if (allQtt < 1)
+            {
+                recapEmpty.style.display = "flex";
+            }
             updateTotals();
         });
 
         orderButton.addEventListener("click", () => {
             const validatedOrder = document.querySelector(".validatedOrder")
-            const cartItems =ulCart.querySelectorAll(".cartItem");
+            const cartItems = ulCart.querySelectorAll(".cartItem");
             let orderProducts = "";
 
             cartItems.forEach((cartItem) => {
@@ -141,23 +152,25 @@ addToCartButtons.forEach((button) => {
                 const productQuantity = cartItem.querySelector(".cartQuantity").textContent.trim();
                 const productUnitPrice = cartItem.querySelector(".unitPrice").textContent.trim();
                 const productTotalPrice = cartItem.querySelector(".totalPrice").textContent.trim();
-                const productImgSrc = cartItem.querySelector("img");
+                const productImgSrc = cartItem.getAttribute("data-img");
 
-                orderProducts += `<div class="orderProduct">
-                            <div>
-                                <img src="${productImgSrc}" alt="">
-                            </div>
-                            <div class="infoOrderProduct">
+                orderProducts += `<div class="orderProductContainer">
+                                <div class="orderProduct">
                                 <div>
-                                    <p>${productName}</p>
+                                    <img src="${productImgSrc}" alt="">
                                 </div>
-                                <div class="quantityPrice">
-                                    <div class="cartPrice">
-                                        <p class="cartQuantity">${productQuantity}</p>
-                                        <p class="unitPrice">${productUnitPrice}</p>
-                                    </div>
+                                <div class="infoOrderProduct">
                                     <div>
-                                        <h3>${productTotalPrice}</h3>
+                                        <p>${productName}</p>
+                                    </div>
+                                    <div class="quantityPrice">
+                                        <div class="cartPrice">
+                                            <p class="cartQuantity">${productQuantity}</p>
+                                            <p class="unitPrice">${productUnitPrice}</p>
+                                        </div>
+                                        <div>
+                                            <h3>${productTotalPrice}</h3>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +192,10 @@ addToCartButtons.forEach((button) => {
                         </div>
                     </div>
                     ${orderProducts}
-                    <p>$${totalAmount.toFixed(2)}</p>
+                    <div class="validatedAmount">
+                    <p>Order Total</p>
+                    <h2>$${totalAmount.toFixed(2)}</h2>
+                    </div>
                     <button class="newOrder">Start New Order</button>
                 </div>
             `;
@@ -188,28 +204,18 @@ addToCartButtons.forEach((button) => {
             validatedOrder.style.height = "100%";
             validatedOrder.style.padding = "50px";
             validatedOrder.style.position = "fixed";
-
             const newOrder = document.querySelector(".newOrder");
             newOrder.addEventListener("click", () => {
-                totalAmount -= quantity * productPrice;
-                allQtt -= quantity;
-                validatedOrder.remove();
-                cartItem.remove();
-                quantityContainer.remove();
-                amount.remove();
-                orderTotal.remove();
-                infDelivery.style.display = "none";
-                button.style.display = "block";
-                addImgBtn.style.display = "flex";
-                recapEmpty.style.display = "flex";
-                orderButton.style.display = "none";
-                updateTotals();
+                location.reload();
             });
         });
         orderButton.style.display = "block";
         addImgBtn.style.display = "none";
         infDelivery.style.display = "flex";
-        recapEmpty.style.display = "none";
+        if (allQtt >= 1)
+        {
+            recapEmpty.style.display = "none";
+        }
         finalPrice.appendChild(orderTotal);
         finalPrice.appendChild(amount);
         ulCart.appendChild(cartItem);
